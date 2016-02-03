@@ -15,6 +15,7 @@ setup(
         author = "Tong Zhang",
         author_email = "zhangtong@sinap.ac.cn",
         license = "MIT",
+        url = 'https://github.com/Archman/pyrpn',
         packages = find_packages(exclude=['tests*']),
         scripts = appScripts,
 )
