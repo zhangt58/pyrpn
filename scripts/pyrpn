@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#
+# 2016-02-03 
+#
+
+from pyrpn.rpn import Rpn
+import sys
+
+def showhelp():
+    print("Usage: input a valid rpn line seperated by space, press enter return the result\n")
+    print("\tReturn value 0 means error input;")
+    print("\ttype 'exit' or 'quit' or CTRL+D to exit.")
+
+print("Welcome to RPN calculator, powered by Python, created by Tong Zhang (2016-02).")
+
+prompt = 'pyrpn shell > '
+while True:
+    try:
+        istr = raw_input(prompt)
+        if istr == 'exit' or istr == 'quit':
+            print("%s%s" % (prompt, 'Bye.'))
+            sys.exit(0)
+        if istr == 'help':
+            showhelp()
+            continue
+    except KeyboardInterrupt:
+        print("%s%s" % (prompt, 'Bye.'))
+        sys.exit(0)
+    except EOFError:
+        sys.exit(0)
+
+    print("%s%f" % (prompt, Rpn.solve_rpn(istr)))
+
