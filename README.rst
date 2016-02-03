@@ -3,7 +3,8 @@ pyrpn
 
 Reverse Polish Notation calculator by python.
 
-*Limited operation supported*
+##Limited operation supported##
+
 + - * / sin cos tan
 
-*other operations should be added.*
+##other operations should be added##
