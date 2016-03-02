@@ -31,5 +31,5 @@ while True:
     except EOFError:
         sys.exit(0)
 
-    print("%s%f" % (prompt, Rpn.solve_rpn(istr)))
+    print("%s%.16f" % (prompt, Rpn.solve_rpn(istr)))
 

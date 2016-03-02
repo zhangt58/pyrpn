@@ -7,6 +7,8 @@
 # Author: Tong Zhang
 #
 from __future__ import division
+from decimal import *
+getcontext().prec = 16
 
 """
 python package to handle RPN issues
@@ -102,7 +104,7 @@ class Rpn(object):
                 tmpr = self.opdic[oprt]()
             except (IndexError, ValueError, KeyError):
                 return 0
-            self.opslist.append(str(tmpr))
+            self.opslist.append('{result:.20f}'.format(result = tmpr))
 
             popflag = True
 
