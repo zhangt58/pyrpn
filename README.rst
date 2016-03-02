@@ -8,3 +8,5 @@ Reverse Polish Notation calculator by python.
 '+' '-' '*' '/' 'sin' 'cos' 'tan'
 
 #other operations should be added#
+
+shell script supported: *pyrpn*
