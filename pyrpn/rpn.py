@@ -97,18 +97,21 @@ class Rpn(object):
                     except:
                         popflag = False
                 except IndexError:
-                    return 0
+                    return None
 
             try:
                 oprt = self.tmpopslist.pop()
                 tmpr = self.opdic[oprt]()
             except (IndexError, ValueError, KeyError):
-                return 0
+                return None
             self.opslist.append('{result:.20f}'.format(result = tmpr))
 
             popflag = True
 
-        return float(self.opslist[0])
+        try:
+            return float(self.opslist[0])
+        except:
+            return None
                 
 def test():
     istr1 = '1 2 + 3 * sin'
