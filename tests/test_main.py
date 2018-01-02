@@ -6,7 +6,7 @@ import math
 from pyrpn.rpn import Rpn
 
 
-NPRC = 14
+NPRC = 12
 
 class TestRpn(unittest.TestCase):
     def test_repr(self):
