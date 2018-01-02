@@ -19,4 +19,7 @@ setup(
         url = 'https://github.com/Archman/pyrpn',
         packages = find_packages(exclude=['tests*']),
         scripts = appScripts,
+        classifiers=[
+            "Programming Language :: Python",
+        ],
 )
