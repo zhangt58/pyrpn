@@ -8,9 +8,10 @@ appScripts = [os.path.join('scripts', scriptname) for scriptname in appScriptsNa
 
 setup(
         name = "pyrpn",
-        version = "1.0.0",
+        version = "1.0.3",
         description = "rpn calculator",
-        long_description = "solve reverse polish notation expression",
+        long_description = "solve reverse polish notation expression\n" + 
+        "shell command: 'pyrpn' could be called to do rpn calculation.",
         platforms = ['Linux'],
         author = "Tong Zhang",
         author_email = "zhangtong@sinap.ac.cn",
@@ -18,4 +19,7 @@ setup(
         url = 'https://github.com/Archman/pyrpn',
         packages = find_packages(exclude=['tests*']),
         scripts = appScripts,
+        classifiers=[
+            "Programming Language :: Python",
+        ],
 )

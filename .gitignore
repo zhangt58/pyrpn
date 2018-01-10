@@ -1,0 +1,6 @@
+*.pyc
+*.swp
+*.egg-info
+*.coverage
+*.noseids
+*.ipynb_checkpoints

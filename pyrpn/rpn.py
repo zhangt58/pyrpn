@@ -6,7 +6,7 @@
 # 2016-02-01
 # Author: Tong Zhang
 #
-from __future__ import division
+from __future__ import division, print_function
 from decimal import *
 getcontext().prec = 16
 
@@ -32,7 +32,7 @@ class Rpn(object):
     def __init__(self, istr, delimiter = None):
         self.opslist = istr.lower().replace('pi',str(math.pi)).split(delimiter)
         self.opslist.reverse()
-        
+
         oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan']
         opfun = [self.fadd, self.fsub, self.fmul, self.fdiv,
                  self.fsin, self.fcos, self.ftan]
@@ -46,7 +46,7 @@ class Rpn(object):
     def fsub(self):
         a = float(self.tmpopslist.pop())
         b = float(self.tmpopslist.pop())
-        return b - a 
+        return b - a
 
     def fmul(self):
         a = float(self.tmpopslist.pop())
@@ -72,7 +72,7 @@ class Rpn(object):
 
     def __str__(self):
         return ' '.join(reversed(self.opslist))
-        
+
     @classmethod
     def solve_rpn(cls, istr):
         """ solve rpn expression
@@ -97,44 +97,47 @@ class Rpn(object):
                     except:
                         popflag = False
                 except IndexError:
-                    return 0
+                    return None
 
             try:
                 oprt = self.tmpopslist.pop()
                 tmpr = self.opdic[oprt]()
             except (IndexError, ValueError, KeyError):
-                return 0
+                return None
             self.opslist.append('{result:.20f}'.format(result = tmpr))
 
             popflag = True
 
-        return float(self.opslist[0])
+        try:
+            return float(self.opslist[0])
+        except:
+            return None
                 
 def test():
     istr1 = '1 2 + 3 * sin'
     rpnins1 = Rpn(istr1)
-    print rpnins1
-    print rpnins1.solve()
+    print(rpnins1)
+    print(rpnins1.solve())
 
     istr2 = '1 2 + 3 * cos'
     rpnins2 = Rpn(istr2)
-    print rpnins2
-    print rpnins2.solve()
+    print(rpnins2)
+    print(rpnins2.solve())
 
     istr3 = '10,3,1,2,/,*,-,tan'
     rpnins3 = Rpn(istr3, ',')
-    print rpnins3
-    print rpnins3.solve()
+    print(rpnins3)
+    print(rpnins3.solve())
 
     istr4 = '0.2 10.24 pi * 180 / * 10.24 pi * 180 / sin /'
     rpnins4 = Rpn(istr4)
-    print rpnins4
-    print rpnins4.solve()
+    print(rpnins4)
+    print(rpnins4.solve())
 
     istr5 = '0.2 10.24 pi * 180 / * 10.24 pi * 180'
     rpnins5 = Rpn(istr5)
-    print rpnins5
-    print rpnins5.solve()
+    print(rpnins5)
+    print(rpnins5.solve())
 
 def main():
     test()
