@@ -47,3 +47,8 @@ class TestRpn(unittest.TestCase):
 
     def test_rpn_solve_str(self):
         self.assertAlmostEqual(Rpn.solve_rpn('2 cos'), math.cos(2), places=NPRC)
+
+    def test_rpn_sqrt(self):
+        self.assertAlmostEqual(Rpn('4.0 sqrt').solve(), math.sqrt(4.0), places=NPRC)
+        self.assertAlmostEqual(Rpn('2.0 sqrt').solve(), math.sqrt(2.0), places=NPRC)
+        self.assertIsNone(Rpn('-1.0 sqrt').solve())

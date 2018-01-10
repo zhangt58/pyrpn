@@ -33,9 +33,9 @@ class Rpn(object):
         self.opslist = istr.lower().replace('pi',str(math.pi)).split(delimiter)
         self.opslist.reverse()
 
-        oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan']
+        oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan', 'sqrt']
         opfun = [self.fadd, self.fsub, self.fmul, self.fdiv,
-                 self.fsin, self.fcos, self.ftan]
+                 self.fsin, self.fcos, self.ftan, self.sqrt]
         self.opdic = dict(zip(oprts, opfun))
 
     def fadd(self):
@@ -69,6 +69,10 @@ class Rpn(object):
     def ftan(self):
         a = float(self.tmpopslist.pop())
         return math.tan(a)
+
+    def sqrt(self):
+        a = float(self.tmpopslist.pop())
+        return math.sqrt(a)
 
     def __str__(self):
         return ' '.join(reversed(self.opslist))
