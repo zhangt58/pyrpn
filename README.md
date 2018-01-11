@@ -18,7 +18,7 @@ Reverse Polish Notation calculator by python.
 * Use `pyrpn` in Python (2.7, 3.5, 3.6) terminal:
 
 ```Python
->>> from pyrpn.rpn import Rpn
+>>> from pyrpn import Rpn
 >>> Rpn('1 2 +').solve()
 3.0
 >>> Rpn('30 180 / pi * cos').solve()
@@ -27,12 +27,24 @@ Reverse Polish Notation calculator by python.
 0.20106869612225164
 >>> Rpn.solve_rpn('1 2 +')
 3.0
+>>> from pyrpn import solve_rpn
+>>> solve_rpn('1 2 +')
+3.0
 ```
 
 * Use `pyrpn` in Linux terminal:
 ```Shell
 $ pyrpn
-Welcome to RPN calculator, powered by Python, created by Tong Zhang (2016-02).
-pyrpn shell > 1 2 +
-pyrpn shell > 3.0000000000000000
+Welcome to RPN calculator, powered by Python.
+
+pyrpn 1.0.4 -- Python package for reverse polish notation expression.
+help       --> Show usage message.
+exit, quit --> Exit.
+
+pyrpn shell > 2.0 sqrt
+pyrpn shell > 1.4142135623730951
+pyrpn shell > -1 sin sqrt
+Input of sqrt must be a positive number.
+Invalid RPN, fix it and try again.:)
+pyrpn shell > 
 ```
