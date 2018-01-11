@@ -131,6 +131,25 @@ class Rpn(object):
         except:
             return None
                 
+
+def solve_rpn(istr):
+    """Solve rpn expression.
+
+    USAGE: solve_rpn(rpnstr)
+    
+    Parameters
+    ----------
+    rpnstr : str
+        String o rpn expression.
+
+    Returns
+    -------
+    ret : float
+        Calculated result.
+    """
+    return Rpn(istr).solve()
+
+
 def test():
     istr1 = '1 2 + 3 * sin'
     rpnins1 = Rpn(istr1)
