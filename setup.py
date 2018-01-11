@@ -8,7 +8,7 @@ appScripts = [os.path.join('scripts', scriptname) for scriptname in appScriptsNa
 
 setup(
         name = "pyrpn",
-        version = "1.0.3",
+        version = "1.0.4",
         description = "rpn calculator",
         long_description = "solve reverse polish notation expression\n" + 
         "shell command: 'pyrpn' could be called to do rpn calculation.",
