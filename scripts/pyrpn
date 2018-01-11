@@ -11,13 +11,16 @@ import sys
 
 
 def showhelp():
-    print("Usage: Input valid RPN line seperated by space, press enter to return the result.\n")
-    print("  Return value 0 means error input;")
-    print("  type 'exit' or 'quit' or CTRL+D to exit.")
+    print("Input RPN expression seperated by space, press enter to get the result.\n")
+    print("For example: 1 2 +\n")
+    print("3.0000000000000000\n")
+    print("Type 'exit' or 'quit' or CTRL+D to exit.")
 
 print("Welcome to RPN calculator, powered by Python.\n\n"
       "pyrpn {} -- Python package for reverse polish notation expression.\n"
-      "help --> Show usage message.\n".format(pyrpn.__version__))
+      "help       --> Show usage message.\n"
+      "exit, quit --> Exit.\n"
+      .format(pyrpn.__version__))
 
 prompt = 'pyrpn shell > '
 while True:
