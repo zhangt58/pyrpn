@@ -5,15 +5,19 @@
 # 2016-02-03 
 #
 
+import pyrpn
 from pyrpn.rpn import Rpn
 import sys
 
-def showhelp():
-    print("Usage: input a valid rpn line seperated by space, press enter return the result\n")
-    print("\tReturn value 0 means error input;")
-    print("\ttype 'exit' or 'quit' or CTRL+D to exit.")
 
-print("Welcome to RPN calculator, powered by Python, created by Tong Zhang (2016-02).")
+def showhelp():
+    print("Usage: Input valid RPN line seperated by space, press enter to return the result.\n")
+    print("  Return value 0 means error input;")
+    print("  type 'exit' or 'quit' or CTRL+D to exit.")
+
+print("Welcome to RPN calculator, powered by Python.\n\n"
+      "pyrpn {} -- Python package for reverse polish notation expression.\n"
+      "help --> Show usage message.\n".format(pyrpn.__version__))
 
 prompt = 'pyrpn shell > '
 while True:
@@ -30,6 +34,8 @@ while True:
         sys.exit(0)
     except EOFError:
         sys.exit(0)
-
-    print("%s%.16f" % (prompt, Rpn.solve_rpn(istr)))
-
+    res = Rpn.solve_rpn(istr)
+    if res is not None:
+        print("%s%.16f" % (prompt, res))
+    else:
+        print("Invalid RPN, fix it and try again.:)")
