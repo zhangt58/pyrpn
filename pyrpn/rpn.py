@@ -56,6 +56,8 @@ class Rpn(object):
     def fdiv(self):
         a = float(self.tmpopslist.pop())
         b = float(self.tmpopslist.pop())
+        if a == 0:
+            print("The dividend must not be zero.")
         return b / a
 
     def fsin(self):
@@ -72,6 +74,8 @@ class Rpn(object):
 
     def sqrt(self):
         a = float(self.tmpopslist.pop())
+        if a < 0:
+            print('Input of sqrt must be a positive number.')
         return math.sqrt(a)
 
     def __str__(self):
@@ -106,7 +110,7 @@ class Rpn(object):
             try:
                 oprt = self.tmpopslist.pop()
                 tmpr = self.opdic[oprt]()
-            except (IndexError, ValueError, KeyError):
+            except (IndexError, ValueError, KeyError, ZeroDivisionError):
                 return None
             self.opslist.append('{result:.20f}'.format(result = tmpr))
 
