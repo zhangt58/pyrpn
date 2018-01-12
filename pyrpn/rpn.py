@@ -119,7 +119,18 @@ class Rpn(object):
                     return None
             try:
                 oprt = self.tmpopslist.pop()
-                tmpr = self.opdic[oprt]()
+                if not self.pop_or_swap(oprt):
+                    tmpr = self.opdic[oprt]()
+                else:
+                    if oprt == 'pop':
+                        self.tmpopslist.pop()
+                        tmpr = float(self.tmpopslist.pop())
+                    elif oprt == 'swap':
+                        first = self.tmpopslist.pop()
+                        tmpr = float(self.tmpopslist.pop())
+                        self.tmpopslist.append(first)
+                    else:
+                        raise NotImplementedError
             except (IndexError, ValueError, KeyError, ZeroDivisionError):
                 return None
             self.opslist.append('{result:.20f}'.format(result = tmpr))
@@ -130,6 +141,9 @@ class Rpn(object):
             return float(self.opslist[0])
         except:
             return None
+
+    def pop_or_swap(self, command):
+        return command == 'pop' or command == 'swap'
                 
 
 def solve_rpn(istr):
