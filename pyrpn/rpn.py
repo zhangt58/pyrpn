@@ -1,41 +1,44 @@
 #!/usr/bin/env python
-
-#
 # -*- coding: utf-8 -*-
-#
-# 2016-02-01
-# Author: Tong Zhang
-#
-from __future__ import division, print_function
-from decimal import *
-getcontext().prec = 16
-
 """
-python package to handle RPN issues
+python package to handle RPN calculation.
 RPN: Reverse Polish Notation
-
-USAGE:
-    rpnstr = '10 1 2 + sin *'
-    rpnins = Rpn(rpnstr)
-    result = rpnins.solve()
-
-    Or:
-    result = Rpn.solve_rpn(rpnstr)
 """
-__AUTHOR__ = "Tong Zhang"
-__VERSION__ = "1.0.0"
 
-
+from __future__ import division, print_function
+import decimal
 import math
 
+decimal.getcontext().prec = 20
+
+
 class Rpn(object):
-    def __init__(self, istr, delimiter = None):
+    """Class to handle RPN calculation.
+
+    Parameters
+    ----------
+    istr : str
+        String of rpn expression.
+    delimiter : str
+        Delimiter of *istr*.
+
+    Examples
+    --------
+    >>> from rpn import Rpn
+    >>> rpnstr = '10 1 2 + sin *'
+    >>> rpnins = Rpn(rpnstr)
+    >>> result = rpnins.solve()
+    1.4112000805986722
+    >>> # or:
+    >>> result = Rpn.solve_rpn(rpnstr)
+    """
+    def __init__(self, istr, delimiter=None):
         self.opslist = istr.lower().replace('pi',str(math.pi)).split(delimiter)
         self.opslist.reverse()
 
         oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan', 'sqrt']
         opfun = [self.fadd, self.fsub, self.fmul, self.fdiv,
-                 self.fsin, self.fcos, self.ftan, self.sqrt]
+                 self.fsin, self.fcos, self.ftan, self.fsqrt]
         self.opdic = dict(zip(oprts, opfun))
 
     def fadd(self):
@@ -56,6 +59,8 @@ class Rpn(object):
     def fdiv(self):
         a = float(self.tmpopslist.pop())
         b = float(self.tmpopslist.pop())
+        if a == 0:
+            print("The dividend must not be zero.")
         return b / a
 
     def fsin(self):
@@ -70,8 +75,10 @@ class Rpn(object):
         a = float(self.tmpopslist.pop())
         return math.tan(a)
 
-    def sqrt(self):
+    def fsqrt(self):
         a = float(self.tmpopslist.pop())
+        if a < 0:
+            print('Input of sqrt must be a positive number.')
         return math.sqrt(a)
 
     def __str__(self):
@@ -79,19 +86,27 @@ class Rpn(object):
 
     @classmethod
     def solve_rpn(cls, istr):
-        """ solve rpn expression
+        """Solve rpn expression.
 
-            USAGE: solve_rpn(rpnstr)
-            :param rpnstr: rpn string
-            return: calculated result
+        USAGE: solve_rpn(rpnstr)
+        
+        Parameters
+        ----------
+        rpnstr : str
+            String o rpn expression.
+
+        Returns
+        -------
+        ret : float
+            Calculated result.
         """
         return cls(istr).solve()
 
     def solve(self):
+        """Solve rpn expression, return None if not valid."""
         popflag = True
         self.tmpopslist = []
         while len(self.opslist) > 1:
-
             while popflag:
                 try:
                     op = self.opslist.pop()
@@ -102,11 +117,10 @@ class Rpn(object):
                         popflag = False
                 except IndexError:
                     return None
-
             try:
                 oprt = self.tmpopslist.pop()
                 tmpr = self.opdic[oprt]()
-            except (IndexError, ValueError, KeyError):
+            except (IndexError, ValueError, KeyError, ZeroDivisionError):
                 return None
             self.opslist.append('{result:.20f}'.format(result = tmpr))
 
@@ -117,6 +131,25 @@ class Rpn(object):
         except:
             return None
                 
+
+def solve_rpn(istr):
+    """Solve rpn expression.
+
+    USAGE: solve_rpn(rpnstr)
+    
+    Parameters
+    ----------
+    rpnstr : str
+        String o rpn expression.
+
+    Returns
+    -------
+    ret : float
+        Calculated result.
+    """
+    return Rpn(istr).solve()
+
+
 def test():
     istr1 = '1 2 + 3 * sin'
     rpnins1 = Rpn(istr1)
