@@ -52,3 +52,13 @@ class TestRpn(unittest.TestCase):
         self.assertAlmostEqual(Rpn('4.0 sqrt').solve(), math.sqrt(4.0), places=NPRC)
         self.assertAlmostEqual(Rpn('2.0 sqrt').solve(), math.sqrt(2.0), places=NPRC)
         self.assertIsNone(Rpn('-1.0 sqrt').solve())
+
+    def test_pop(self):
+        self.assertAlmostEqual(Rpn('1 1 7 pop +').solve(), 2, places=NPRC)
+        self.assertAlmostEqual(Rpn('1 1 7 pop + 5 *').solve(), 10, places=NPRC)
+
+    def test_swap(self):
+        self.assertAlmostEqual(Rpn('2 1 /').solve(), 2, places=NPRC)
+        self.assertAlmostEqual(Rpn('1 2 /').solve(), 0.5, places=NPRC)
+        self.assertAlmostEqual(Rpn('1 2 swap /').solve(), 2, places=NPRC)
+        self.assertAlmostEqual(Rpn('2 1 swap /').solve(), 0.5, places=NPRC)
