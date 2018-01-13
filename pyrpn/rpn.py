@@ -36,9 +36,12 @@ class Rpn(object):
         self.opslist = istr.lower().replace('pi',str(math.pi)).split(delimiter)
         self.opslist.reverse()
 
-        oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan', 'sqrt']
+        oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan', 'sqrt',
+                 'pop', 'swap']
         opfun = [self.fadd, self.fsub, self.fmul, self.fdiv,
-                 self.fsin, self.fcos, self.ftan, self.fsqrt]
+                 self.fsin, self.fcos, self.ftan, self.fsqrt,
+                 self.fpop, self.fswap,
+        ]
         self.opdic = dict(zip(oprts, opfun))
 
     def fadd(self):
@@ -81,6 +84,17 @@ class Rpn(object):
             print('Input of sqrt must be a positive number.')
         return math.sqrt(a)
 
+    def fpop(self):
+        self.tmpopslist.pop()
+        return None
+
+    def fswap(self):
+        a = self.tmpopslist.pop()
+        b = self.tmpopslist.pop()
+        self.tmpopslist.append(a)
+        self.tmpopslist.append(b)
+        return None
+
     def __str__(self):
         return ' '.join(reversed(self.opslist))
 
@@ -106,7 +120,7 @@ class Rpn(object):
         """Solve rpn expression, return None if not valid."""
         popflag = True
         self.tmpopslist = []
-        while len(self.opslist) > 1:
+        while True:
             while popflag:
                 try:
                     op = self.opslist.pop()
@@ -122,9 +136,12 @@ class Rpn(object):
                 tmpr = self.opdic[oprt]()
             except (IndexError, ValueError, KeyError, ZeroDivisionError):
                 return None
-            self.opslist.append('{result:.20f}'.format(result = tmpr))
-
-            popflag = True
+            if tmpr is not None:
+                self.opslist.append('{result:.20f}'.format(result=tmpr))
+            if len(self.tmpopslist) > 0 or len(self.opslist) > 1:
+                popflag = True
+            else:
+                break
 
         try:
             return float(self.opslist[0])
