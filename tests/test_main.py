@@ -42,8 +42,8 @@ class TestRpn(unittest.TestCase):
                 0.2*(10.24*math.pi)/180/math.sin(10.24*math.pi/180), places=NPRC)
 
     def test_rpn_const_pi(self):
-        self.assertAlmostEqual(Rpn('pi').solve(), 3.14159265359, places=NPRC)
-        self.assertAlmostEqual(Rpn('PI').solve(), 3.14159265359, places=NPRC)
+        self.assertAlmostEqual(Rpn('1 pi *').solve(), 3.14159265359, places=NPRC)
+        self.assertAlmostEqual(Rpn('1 PI *').solve(), 3.14159265359, places=NPRC)
 
     def test_rpn_solve_str(self):
         self.assertAlmostEqual(Rpn.solve_rpn('2 cos'), math.cos(2), places=NPRC)
