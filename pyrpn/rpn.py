@@ -41,8 +41,8 @@ class Rpn(object):
         self.opslist = istr.lower().split(delimiter)
         self.opslist.reverse()
 
-        # initial stored constants
-        self.pi = math.pi
+        # initial stored variables, will keep user-defined ones by 'sto'.
+        self.variables = {'pi': math.pi}
 
         # initial stored operations
         self.operators = ['+', '-', '*', '/',
@@ -114,7 +114,7 @@ class Rpn(object):
         a = float(self.tmpopslist.pop())
         var = self.opslist.pop()
         if isinstance(var, basestring):
-            setattr(self, var, a)
+            self.variables.update({var: a})
             return a
         else:
             print("Can only sto into a variable.")
@@ -149,7 +149,7 @@ class Rpn(object):
             while self.opslist and popflag:
                 op = self.opslist.pop()
                 if self.is_variable(op):
-                    op = getattr(self, op)
+                    op = self.variables.get(op)
                 if self.is_operator(op):
                     popflag = False
                     break
@@ -185,7 +185,7 @@ class Rpn(object):
     def is_variable(self, s):
         """Test if *s* is a defined variable (attribute).
         """
-        return hasattr(self, s)
+        return s in self.variables
 
 
 def solve_rpn(istr):
