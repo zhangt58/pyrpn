@@ -53,7 +53,16 @@ class TestRpn(unittest.TestCase):
         self.assertAlmostEqual(Rpn('2.0 sqrt').solve(), math.sqrt(2.0), places=NPRC)
         self.assertIsNone(Rpn('-1.0 sqrt').solve())
 
-    def test_rpn_sto(self):
+    def test_rpn_sto_1(self):
+        """test sto operation: solve"""
         self.assertAlmostEqual(Rpn('1 2 + sto three').solve(), 3, places=NPRC)
         self.assertAlmostEqual(Rpn('1 2 + sto three pop three sin').solve(), 0.141120008059867, places=NPRC)
+
+    def test_rpn_sto_2(self):
+        """test sto operation: variables"""
+        a = Rpn('1 2 + sto three')
+        self.assertEqual(a.variables, {'pi': math.pi})
+        a.solve()
+        self.assertEqual(a.variables, {'pi': math.pi, 'three': 3.0})
+        
 
