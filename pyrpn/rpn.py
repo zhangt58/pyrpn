@@ -11,6 +11,11 @@ import math
 
 decimal.getcontext().prec = 20
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 class Rpn(object):
     """Class to handle RPN calculation.
@@ -33,13 +38,24 @@ class Rpn(object):
     >>> result = Rpn.solve_rpn(rpnstr)
     """
     def __init__(self, istr, delimiter=None):
-        self.opslist = istr.lower().replace('pi',str(math.pi)).split(delimiter)
+        self.opslist = istr.lower().split(delimiter)
         self.opslist.reverse()
 
-        oprts = ['+', '-', '*', '/', 'sin', 'cos', 'tan', 'sqrt']
+        # initial stored variables, will keep user-defined ones by 'sto'.
+        self.variables = {'pi': math.pi}
+
+        # initial stored operations
+        self.operators = ['+', '-', '*', '/',
+                          'sin', 'cos', 'tan',
+                          'sqrt',
+                          'pop', 'swap',
+                          'sto',
+        ]
         opfun = [self.fadd, self.fsub, self.fmul, self.fdiv,
-                 self.fsin, self.fcos, self.ftan, self.fsqrt]
-        self.opdic = dict(zip(oprts, opfun))
+                 self.fsin, self.fcos, self.ftan, self.fsqrt,
+                 self.fpop, self.fswap, self.fsto,
+        ]
+        self.opdict = dict(zip(self.operators, opfun))
 
     def fadd(self):
         a = float(self.tmpopslist.pop())
@@ -81,6 +97,29 @@ class Rpn(object):
             print('Input of sqrt must be a positive number.')
         return math.sqrt(a)
 
+    def fpop(self):
+        self.tmpopslist.pop()
+        return None
+
+    def fswap(self):
+        a = self.tmpopslist.pop()
+        b = self.tmpopslist.pop()
+        self.tmpopslist.append(a)
+        self.tmpopslist.append(b)
+        return None
+
+    def fsto(self):
+        """sto operation.
+        """
+        a = float(self.tmpopslist.pop())
+        var = self.opslist.pop()
+        if isinstance(var, basestring):
+            self.variables.update({var: a})
+            return a
+        else:
+            print("Can only sto into a variable.")
+            return 'ERROR'
+
     def __str__(self):
         return ' '.join(reversed(self.opslist))
 
@@ -89,11 +128,11 @@ class Rpn(object):
         """Solve rpn expression.
 
         USAGE: solve_rpn(rpnstr)
-        
+
         Parameters
         ----------
         rpnstr : str
-            String o rpn expression.
+            String of rpn expression.
 
         Returns
         -------
@@ -106,41 +145,58 @@ class Rpn(object):
         """Solve rpn expression, return None if not valid."""
         popflag = True
         self.tmpopslist = []
-        while len(self.opslist) > 1:
-            while popflag:
-                try:
-                    op = self.opslist.pop()
-                    self.tmpopslist.append(op)
-                    try:
-                        float(op)
-                    except:
-                        popflag = False
-                except IndexError:
-                    return None
-            try:
-                oprt = self.tmpopslist.pop()
-                tmpr = self.opdic[oprt]()
-            except (IndexError, ValueError, KeyError, ZeroDivisionError):
+        while True:
+            while self.opslist and popflag:
+                op = self.opslist.pop()
+                if self.is_variable(op):
+                    op = self.variables.get(op)
+                if self.is_operator(op):
+                    popflag = False
+                    break
+                self.tmpopslist.append(op)
+
+            # operations
+            tmpr = self._get_temp_result(op)
+            if tmpr == 'ERROR':
                 return None
-            self.opslist.append('{result:.20f}'.format(result = tmpr))
 
-            popflag = True
+            if tmpr is not None:
+                self.opslist.append('{r:.20f}'.format(r=tmpr))
 
+            if len(self.tmpopslist) > 0 or len(self.opslist) > 1:
+                popflag = True
+            else:
+                break
+
+        return float(self.opslist[0])
+
+    def _get_temp_result(self, op):
         try:
-            return float(self.opslist[0])
-        except:
-            return None
-                
+            tmpr = self.opdict[op]()
+        except (IndexError, ValueError, KeyError, ZeroDivisionError):
+            tmpr = 'ERROR'
+        return tmpr
+
+    def is_operator(self, s):
+        """Test if *s* is a valid operation.
+        """
+        return s in self.operators
+
+    def is_variable(self, s):
+        """Test if *s* is a defined variable (attribute).
+        """
+        return s in self.variables
+
 
 def solve_rpn(istr):
     """Solve rpn expression.
 
     USAGE: solve_rpn(rpnstr)
-    
+
     Parameters
     ----------
     rpnstr : str
-        String o rpn expression.
+        String of rpn expression.
 
     Returns
     -------

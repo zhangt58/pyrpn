@@ -7,7 +7,7 @@
 Reverse Polish Notation calculator by python.
 
 * Builtin operations:
-  * `+`, `-`, `*`, `/`, `sin`, `cos`, `tan`, `sqrt`
+  * `+`, `-`, `*`, `/`, `sin`, `cos`, `tan`, `sqrt`, `pop`, `swap`, `sto`
 * Constants:
   * `pi`
 * Other operations could be added (development)
@@ -46,5 +46,8 @@ pyrpn shell > 1.4142135623730951
 pyrpn shell > -1 sin sqrt
 Input of sqrt must be a positive number.
 Invalid RPN, fix it and try again.:)
-pyrpn shell > 
+pyrpn shell > 1 2 3 pop +
+pyrpn shell > 3.0000000000000000
+pyrpn shell > 1 2 + sto three pop three 2 *
+pyrpn shell > 6.0000000000000000
 ```
